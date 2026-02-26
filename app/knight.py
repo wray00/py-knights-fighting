@@ -1,24 +1,20 @@
 class Knight:
     def __init__(self, knight_config: dict) -> None:
-        self.knight_config = knight_config
+        self.name = knight_config["name"]
+        self.power = knight_config["power"] + knight_config["weapon"]["power"]
+        self.hp = knight_config["hp"]
+        self.armour = knight_config["armour"]
+        self.weapon = knight_config["weapon"]
+        self.potion = knight_config["potion"]
+        self.protection = sum(armour["protection"] for armour in self.armour)
 
-    def apply_hp_and_potion(self) -> int:
-        return self.knight_config["hp"] + self.apply_potion("hp")
+        self.add_potion()
 
-    def apply_armour_and_potion(self) -> int:
-        protection = 0
-        for armour in self.knight_config["armour"]:
-            protection += armour["protection"]
-        return protection + self.apply_potion("protection")
-
-    def apply_weapon_and_potion(self) -> int:
-        return (self.knight_config["power"]
-                + self.knight_config["weapon"]["power"]
-                + self.apply_potion("power"))
-
-    def apply_potion(self, type_of_effect: str) -> int:
-        if (self.knight_config["potion"] is not None
-                and type_of_effect in self.knight_config["potion"]["effect"]):
-            return self.knight_config["potion"]["effect"][type_of_effect]
-
-        return 0
+    def add_potion(self) -> None:
+        if self.potion is not None:
+            if "hp" in self.potion["effect"]:
+                self.hp += self.potion["effect"]["hp"]
+            if "power" in self.potion["effect"]:
+                self.power += self.potion["effect"]["power"]
+            if "protection" in self.potion["effect"]:
+                self.protection += self.potion["effect"]["protection"]

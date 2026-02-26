@@ -11,7 +11,13 @@ knights_config = {
             "name": "Metal Sword",
             "power": 50,
         },
-        "potion": None,
+        "potion": {
+            "name": "Magic Power",
+            "effect": {
+                "power": +25,
+                "hp": +10,
+            }
+        }
     },
     "arthur": {
         "name": "Arthur",
@@ -35,7 +41,14 @@ knights_config = {
             "name": "Two-handed Sword",
             "power": 55,
         },
-        "potion": None,
+        "potion": {
+            "name": "Dragon's heart",
+            "effect": {
+                "protection": +20,
+                "power": +10,
+                "hp": +10,
+            }
+        }
     },
     "mordred": {
         "name": "Mordred",
@@ -90,13 +103,12 @@ knights_config = {
 
 
 def battle(knights: dict) -> dict:
-    lancelot = Knight(knights["lancelot"])
-    arthur = Knight(knights["arthur"])
-    mordred = Knight(knights["mordred"])
-    red_knight = Knight(knights["red_knight"])
-
-    first_battle = perform_battle(lancelot, mordred)
-    second_battle = perform_battle(arthur, red_knight)
+    knight_dict = {
+        key: Knight(value) for (key, value) in knights.items()}
+    first_battle = perform_battle(knight_dict["lancelot"],
+                                  knight_dict["mordred"])
+    second_battle = perform_battle(knight_dict["arthur"],
+                                   knight_dict["red_knight"])
 
     return {"Lancelot": first_battle["Lancelot"],
             "Arthur": second_battle["Arthur"],
